@@ -63,4 +63,29 @@ function propagate(
     return (J = J, dw = dw, db = db)
 end
 
+"""
+    optimize!(w, b, X, Y, num_iterations, learning_rate)
+
+Given initial model (w, b) and data (X, Y), optimize model parameters using
+gradient descent method. Model optimization is done in place. Returns optimized
+parameters and cost for each iteration for convergence studies.
+"""
+function optimize!(
+    w::AbstractVector,
+    b::Number,
+    X::AbstractVector{T},
+    Y::AbstractVector,
+    num_iterations::Integer,
+    learning_rate::Float64,
+) where {T<:AbstractVector}
+    J = zeros(num_iterations)
+    for i in 1:num_iterations
+        result = propagate(w, b, X, Y)
+        J[i] = result.J
+        w = w - learning_rate * result.dw
+        b = b - learning_rate * result.db
+    end
+    return w, b, J
+end
+
 end # module

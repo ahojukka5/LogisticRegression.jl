@@ -7,4 +7,7 @@ using Test
     @testset "test_propagate.jl" begin
         include("test_propagate.jl")
     end
+    @testset "test_optimize.jl" begin
+        include("test_optimize.jl")
+    end
 end
