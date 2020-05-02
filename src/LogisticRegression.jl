@@ -88,4 +88,46 @@ function optimize!(
     return w, b, J
 end
 
+"""
+    optimize_gd!(w, b, X, Y, num_iterations, learning_rate)
+
+Given initial model (w, b) and data (X, Y), optimize model parameters using
+gradient descent method. Model optimization is done in place. Returns optimized
+parameters and cost for each iteration for convergence studies. This is the same
+algorithm than above, only slightly optimized with respect to memory useage and
+speed.
+"""
+function optimize_gd!(
+    w::AbstractVector,
+    b::Number,
+    X::AbstractVector{T},
+    Y::AbstractVector,
+    num_iterations::Integer,
+    learning_rate::Float64,
+) where {T<:AbstractVector}
+    @assert length(X) == length(Y)
+    m = length(X)
+    @assert m > 0
+
+    costs = zeros(num_iterations)
+    dw = zeros(length(w))
+    for k in 1:num_iterations
+        fill!(dw, 0.0)
+        J = 0.0
+        db = 0.0
+        for (x, y) in zip(X, Y)
+            z = dot(w, x) + b
+            a = sigmoid(z)
+            J += -1.0 * (y * log(a) + (1.0 - y) * log(1.0 - a))
+            dz = a - y
+            @. dw = dw + x * dz
+            db += dz
+        end
+        costs[k] = J
+        @. w = w - learning_rate * dw / m
+        b = b - learning_rate * db / m
+    end
+    return w, b, costs
+end
+
 end # module
