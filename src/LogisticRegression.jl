@@ -112,7 +112,7 @@ end
 Given model (W, b) and sample x, predict the class y.
 """
 @inline function predict(W, b, x)
-    return 1 * (sigmoid(W*x .+ b) > 0.5)
+    return 1 * (sigmoid.(W*x .+ b) .> 0.5)
 end
 
 end # module

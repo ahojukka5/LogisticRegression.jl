@@ -10,4 +10,7 @@ using Test
     @testset "test_optimize.jl" begin
         include("test_optimize.jl")
     end
+    @testset "test_predict.jl" begin
+        include("test_predict.jl")
+    end
 end
