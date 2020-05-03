@@ -68,7 +68,7 @@ function propagate!(
         z = evaluate_linear!(z, W, b, x)
      @. a = sigmoid(z)
      @. dz = a - y
-     @. J += -1.0 * (y * log(a) + (1.0 - y) * log(1.0 - a))
+     @. J += logistic_loss(y, a)
      @. dW += x' * dz
      @. db += dz
     end
